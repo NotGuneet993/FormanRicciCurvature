@@ -1,4 +1,7 @@
 # FormanRicciCurvature
+Forman Ricci curvature formula:
+<img width="381" alt="FRC_formula" src="https://github.com/NotGuneet993/FormanRicciCurvature/assets/156938089/8ef7c315-2756-4474-af70-6ccff765c483">
+
 Weighted directed forman ricci curvature. 
 ![WeightedFRC](https://github.com/NotGuneet993/FormanRicciCurvature/assets/156938089/1121e3f4-76c3-4eca-84f6-5bddf9492b41)
 
