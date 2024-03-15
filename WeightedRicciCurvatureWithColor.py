@@ -9,9 +9,22 @@ from matplotlib.pyplot import figure
 # the output will be the summation of the node to plun into the FRC formula
 def summation(v_name, v_weight, e_weight, target, G):
     frc_sum = 0
+
+    # since some nodes are undirected I will store seen nodes in a hashmap for instant lookup to see if it has already been traversed
+    seen = set()
+
+    # G.in_edges('node')'s formatting: tuple -> ('connecting_node', 'node')
     for (v1, v2) in G.in_edges(target):
-        if v_name is not v1:
+        if v_name is not v1 and v1 not in seen:
             frc_sum += v_weight / (sqrt(e_weight * G[v1][target]['weight']))
+            seen.add(v1)
+
+    # G.out_edges('node')'s formatting: tuple -> ('node', 'connecting_node')
+    for (v1, v2) in G.out_edges(target):
+        if v_name is not v2 and v2 not in seen:
+            frc_sum += v_weight / (sqrt(e_weight * G[target][v2]['weight']))
+            seen.add(v2)
+
     return frc_sum
     
 
@@ -95,6 +108,7 @@ for (v1, v2) in G.edges():
 
 frc_map = formanRicciCurvature(G, weight_hashmap)
 
+# attributes of the graph below: nodes' (x,y) coordinates, nodes' colors, the graph size, the title, and the commands to construct the graph.
 pos = {"S3A":(1,4),"S3B":(1,3), "S3G":(1,2), "S3H":(1,1),
        "S2C":(3,4),"S2D":(3,3),"S2I":(3,1.8),
        "S1E":(5,3.5), "S1L":(5,2),
@@ -108,7 +122,7 @@ colors = ['green','green','green','green','green','green','green','green','green
           'red','red','red','red','red','red','red']
 
 figure(figsize=(12,6.5))
-plt.title("Forman Ricci Curvature")
+plt.title("Forman Ricci Curvature (directed graph)")
 nx.draw(G, pos, with_labels=True, node_size = 750, alpha = 0.75, node_color=colors)
 nx.draw_networkx_edge_labels(
     G, pos, edge_labels= frc_map,
